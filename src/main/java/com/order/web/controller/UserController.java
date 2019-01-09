@@ -50,36 +50,9 @@ public class UserController {
         return ApiTools.result(10000,"success", user);
     }
 
-    //获取当前登录uuid用户信息
-    @RequestMapping(value = "/user/list", method = {RequestMethod.POST,RequestMethod.GET})
-    public ApiResult getUserList(){
-        List<User> userList ;
-        userList = userService.selectAllUser();
-        return ApiTools.result(10000,"success", userList);
-    }
 
 
 
-//用户注销接口
-    @RequestMapping(value = "/user/logout",method = {RequestMethod.GET,RequestMethod.POST})
-    @CrossOrigin
-    @AuthToken
-    public ApiResult logout(@RequestHeader String access_token,@RequestAttribute String uuid){
-        String token = access_token;
-
-        if(token==null){
-            return ApiTools.result(00001,"用户未登录",null);
-        }
-        User user = tokenService.getUserInfo(token);
-        if(user==null){
-            return ApiTools.result(00001,"用户已注销",null);
-        }
-        tokenService.loginOff(token);
-        logger.debug("Token '"+token+"' is logout");//用户注销日志
-        logger.debug("User '"+user.getUsername()+"' is logout");
-        logger.debug("User '"+uuid+"' is logout");
-        return ApiTools.result(1000,"用户注销成功",user);
-    }
     //用户拥有的角色
     @RequestMapping(value = "/user/role",method = {RequestMethod.GET,RequestMethod.POST})
      @CrossOrigin
