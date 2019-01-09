@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.order.web.mapper.DepartmentLevelMapper">
+  <resultMap id="BaseResultMap" type="com.order.web.pojo.DepartmentLevel">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.order.web.pojo.DepartmentLevel">
+    insert into order_department_level (id, level, department_id, 
+      parent_id)
+    values (#{id,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.order.web.pojo.DepartmentLevel">
+    insert into order_department_level
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
