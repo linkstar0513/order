@@ -12,4 +12,15 @@ public class ApiTools {
         apiResult.setData(data);
         return apiResult;
     }
+    public static ApiResult result(){
+        ApiResult apiResult = new ApiResult();
+        return apiResult;
+    }
+    public static ApiResult success(Object data){
+        ApiResult apiResult=new ApiResult();
+        apiResult.setCode(00000);
+        apiResult.setMessage("success");
+        apiResult.setData(data);
+        return apiResult;
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebTokenConfig implements WebMvcConfigurer {
 
     /**
-     * 拦截器在spring之前，spring无法注入interceptor拦截器无法注入解决方案
+     * 拦截器在spring之前，spring注入interceptor
      * @return
      */
     @Bean

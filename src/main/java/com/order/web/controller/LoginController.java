@@ -34,7 +34,7 @@ public class LoginController {
     @RequestMapping(value = "/login",method ={RequestMethod.GET, RequestMethod.POST})
     public ApiResult login(String username, String password ,
                            String redirectUrl, HttpServletResponse response){
-        //验证请求格式的正确性
+        //验证请求格式的正确性(此项已有spring框架进行了验证)
         if(null == username || null == password || null == response){
             return ApiTools.result(10001,"请求格式错误",null);
         }

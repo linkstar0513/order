@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -61,10 +62,26 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     /**
      * 存放用户登录模型key的Request Key
      */
-    public static final String REQUEST_CURRENT_KEY="uuid";
+    public static final String REQUEST_CURRENT_KEY="uuid2";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
+
+        //根据cookie获取登录用户
+        Cookie[] cookies = request.getCookies();
+        String token1;
+        if(cookies!=null){
+            for (Cookie cookie:cookies) {
+                if("access_token".equals(cookie.getName())){
+                    token1 = cookie.getValue();
+                    User user = tokenService.getUserInfo(token1);
+                    request.setAttribute("username",user.getUsername());
+                    request.setAttribute("uuid", user.getUuid());
+                }
+            }
+        }
+
+
         if(!(handler instanceof HandlerMethod)){
             return true;
         }
@@ -82,28 +99,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 User user = tokenService.getUserInfo(token);
                 username = user.getUsername();
                 uuid = user.getUuid();
-                //username=stringRedisTemplate.opsForValue().get("530a7191-c431-48de-9d28-83c68dee47d2");
-                logger.debug("Token's username ='"+username+"'");
-                logger.debug("Token's uuid ='"+uuid+"'");
-
             } else { //token为空
                 isLogined = false;
             }
-            /*
-            if(username!=null && !username.trim().equals("")){
-                Long tokenBirthTime = Long.valueOf(stringRedisTemplate.opsForValue().get(token+username));
-                //log
-                Long diffTime = System.currentTimeMillis() - tokenBirthTime;
-                //log
-                if(diffTime>TOKEN_RESET_TIME){
-                   // redisTemplate.expire()
-                    jedis.expire(username,TOKEN_EXPIRE_TIME);
-                    jedis.expire(token,TOKEN_EXPIRE_TIME);
-                    //log
-                    Long newBirthTime =System.currentTimeMillis();
-                    jedis.set(token+username,newBirthTime.toString());
-                }
-            }*/
+
             if(isLogined){
                 request.setAttribute(REQUEST_CURRENT_KEY,uuid);
                 return true;

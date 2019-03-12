@@ -39,8 +39,10 @@ public class UserController {
     //获取用户信息
     @RequestMapping(value = "/user", method = {RequestMethod.GET})
    // @AuthToken
-    public ApiResult getUserInfo(@RequestAttribute(required = false) String uuid,
-                                 @RequestParam(required = false) String username){
+    public ApiResult getUserInfo(@RequestAttribute(required = false,value = "uuid") String uuid,
+                                 @RequestParam(required = false,value = "username") String username){
+        logger.error("UUid"+uuid);
+        logger.error("UserName"+username);
         if(null == username){
             List<User> userList ;
             userList = userService.selectAllUser();
@@ -87,6 +89,8 @@ public class UserController {
         data.put("count",count);
         return ApiTools.result(1000,"成功删除"+count+"条",data);
     }
+
+    //更改用户
     @RequestMapping(value = "/user",method = RequestMethod.PUT)
     public ApiResult updateUsers(@RequestBody User user){
         Map data = new HashMap();
@@ -94,5 +98,22 @@ public class UserController {
         data.put("count",count);
         return ApiTools.result(1000,"成功更新"+count+"条",data);
     }
+
+
+    @RequestMapping(value = "/user/count",method = RequestMethod.GET)
+    public ApiResult getAllUser(){
+        int count = userService.selectAllUser().size();
+        return ApiTools.result(1000,"success",count);
+    }
+
+
+
+    @RequestMapping(value = "/user/current",method = RequestMethod.GET)
+    public ApiResult getCurrentUser(@RequestAttribute(required = false,value = "username") String username,
+                                    @RequestAttribute(required = false,value = "uuid") String uuid){
+        User user = userService.selectUserByName(username);
+        return ApiTools.result(10000,"success", user);
+    }
+
 
 }
