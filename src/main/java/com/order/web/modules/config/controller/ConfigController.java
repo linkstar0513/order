@@ -56,7 +56,7 @@ public class ConfigController {
         Document document = DocumentHelper.createDocument();
         Element ports = document.addElement("port");
         ports.addComment("定义端口");
-        ports.addElement("cargo").addAttribute("cargo","value");
+        ports.addElement("logo").addAttribute("type","svg");
         ports.addAttribute("port","8080").addAttribute("table","prefix");
 
 

@@ -76,19 +76,21 @@ public class LoginController {
 
     //用户注销接口
     @RequestMapping(value = "/logout",method = {RequestMethod.POST,RequestMethod.GET})
-    public ApiResult loginResult(@RequestHeader String access_token) {
+    public ApiResult loginResult(@CookieValue("access_token") String access_token,
+                                 @RequestAttribute(required = false,value = "username") String username,
+                                 @RequestAttribute(required = false,value = "uuid") String uuid) {
         String token = access_token;
 
         if(token==null){
-            return ApiTools.result(00001,"用户未登录",null);
+            return ApiTools.result(10001,"用户未登录",null);
         }
         User user = tokenService.getUserInfo(token);
         if(user==null){
-            return ApiTools.result(00001,"用户已注销",null);
+            return ApiTools.result(10002,"用户已注销",null);
         }
         tokenService.loginOff(token);
         logger.debug("Token '"+token+"' is logout");//用户注销日志
         logger.debug("User '"+user.getUsername()+"' is logout");
-        return ApiTools.result(1000,"用户注销成功",user);
+        return ApiTools.result(10000,"用户注销成功",user);
     }
 }

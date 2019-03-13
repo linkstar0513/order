@@ -43,6 +43,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public void loginOff(String token) {
+        logger.debug("删除token key "+ token);
         stringRedisTemplate.delete(token);
     }
 
