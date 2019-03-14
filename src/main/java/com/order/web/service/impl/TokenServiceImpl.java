@@ -3,6 +3,7 @@ package com.order.web.service.impl;
 import com.order.web.mapper.UserMapper;
 import com.order.web.pojo.User;
 import com.order.web.service.TokenService;
+import com.order.web.util.TokenGenerator;
 import com.order.web.util.TokenUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,15 +29,19 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource(name = "jwtTokenUtils")
+    private TokenGenerator tokenGenerator;
+
     @Override
     public String createToken(User user) {
         //生成access_token插入redis
-        //access_token - uuid;
-        //String access_token = TokenUtil.createToken(user.getUsername());
-        String access_token = UUID.randomUUID().toString().replace("-","");
+        //String access_token = UUID.randomUUID().toString().replace("-","");
+        String access_token = tokenGenerator.generate(user.getUsername());
         String uuid = user.getUuid();
         //stringRedisTemplate.opsForValue().set(access_token,uuid);
         stringRedisTemplate.opsForValue().set(access_token,uuid,600, TimeUnit.SECONDS);
+        //redisTemplate.opsForValue().set(access_token,uuid,600, TimeUnit.SECONDS);
+        //redisTemplate.opsForValue().set(uuid, user);
         logger.debug("Create token '"+access_token+"'for'"+uuid+"'");
         return access_token;
     }

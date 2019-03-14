@@ -3,10 +3,11 @@ package com.order.web.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class User {
+public class User implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
 
