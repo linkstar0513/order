@@ -1,4 +1,4 @@
-package com.order.web.controller;
+package com.order.web.modules.login.controller;
 
 import com.order.web.api.LoginResult;
 import com.order.web.bean.ApiResult;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
@@ -34,7 +35,7 @@ public class LoginController {
     @RequestMapping(value = "/login",method ={RequestMethod.GET, RequestMethod.POST})
     public ApiResult login(String username, String password ,
                            String redirectUrl, HttpServletResponse response){
-        //验证请求格式的正确性(此项已有spring框架进行了验证)
+        //验证请求格式的正确性(前端进行验证)
         if(null == username || null == password || null == response){
             return ApiTools.result(10001,"请求格式错误",null);
         }
@@ -48,9 +49,6 @@ public class LoginController {
         //根据password转换真实的password，再根据加盐处理成加密后的密文
         Boolean isVertify = password.equals(user.getPassword());//验证用户名密码
         //isVertify = true;
-        logger.debug("数据库中的密码为"+user.getPassword());
-        logger.debug("获得的密码为"+password);
-
         if(isVertify){//登录成功
             String md5 = password;
             String access_token=tokenService.createToken(user);
@@ -58,7 +56,7 @@ public class LoginController {
             Cookie cookie = new Cookie("access_token",access_token);
             cookie.setPath("/");
             response.addCookie(cookie);
-            logger.debug(user.getUsername()+" is success login");//用户登录日志
+            logger.debug("用户："+user.getUsername()+"登录成功");//用户登录日志
 
             if (null != redirectUrl){
                 try {

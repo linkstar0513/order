@@ -87,7 +87,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-        logger.error("开始验证是否有AuthToken");
+        //logger.error("开始验证是否有AuthToken");
         // 如果打上了AuthToken注解则需要验证token
         Boolean isLogined = true;//是否已登录
         if(method.getAnnotation(AuthToken.class)!=null || handlerMethod.getBeanType().getAnnotation(AuthToken.class)!=null){
