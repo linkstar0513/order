@@ -1,4 +1,4 @@
-package com.order.web.service;
+package com.order.web.category.articlemanager.service;
 
 import com.order.web.pojo.Article;
 

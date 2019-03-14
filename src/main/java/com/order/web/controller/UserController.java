@@ -110,8 +110,10 @@ public class UserController {
 
     @RequestMapping(value = "/user/current",method = RequestMethod.GET)
     public ApiResult getCurrentUser(@RequestAttribute(required = false,value = "username") String username,
-                                    @RequestAttribute(required = false,value = "uuid") String uuid){
-        User user = userService.selectUserByName(username);
+                                    @RequestAttribute(required = false,value = "uuid") String uuid,
+                                    @CookieValue("access_token") String access_token){
+//        User user = userService.selectUserByName(username);
+        User user = tokenService.getUserInfo(access_token);
         return ApiTools.result(10000,"success", user);
     }
 

@@ -5,6 +5,7 @@ import com.order.web.pojo.User;
 import com.order.web.service.TokenService;
 import com.order.web.util.TokenGenerator;
 import com.order.web.util.TokenUtil;
+import com.order.web.util.impl.JwtTokenUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +56,23 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public User getUserInfo(String token) {
         User user=new User();
-        String uuid;
-        uuid = stringRedisTemplate.opsForValue().get(token);
+
+//        String uuid;
+//        uuid = stringRedisTemplate.opsForValue().get(token);
+//        logger.debug("Logout token is :" +token);
+//        if (uuid==null){
+//            user.setUsername("The User has logout");
+//        } else {
+//            user = userMapper.selectByPrimaryKey(uuid);
+//        }
+        String username = null;
+        //username = JwtTokenUtils.getUsername(token);
         logger.debug("Logout token is :" +token);
-        if (uuid==null){
+        logger.debug("Logout token is :" +JwtTokenUtils.getUsername(token));
+        if (username==null){
             user.setUsername("The User has logout");
         } else {
-            user = userMapper.selectByPrimaryKey(uuid);
+            user = userMapper.selectByUsername(username);
         }
 
         return user;

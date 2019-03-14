@@ -74,9 +74,15 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             for (Cookie cookie:cookies) {
                 if("access_token".equals(cookie.getName())){
                     token1 = cookie.getValue();
-                    User user = tokenService.getUserInfo(token1);
-                    request.setAttribute("username",user.getUsername());
-                    request.setAttribute("uuid", user.getUuid());
+                    logger.debug("获取到的token"+token1);
+
+                    //取消在此获得用户，签名是自动生成的用户第一次登录时签名错误，
+                    //获取用户移动到具体业务后，用户登录完成生成token之后
+                  //  User user = tokenService.getUserInfo(token1);
+
+
+                    //request.setAttribute("username",user.getUsername());
+                    //request.setAttribute("uuid", user.getUuid());
                 }
             }
         }
