@@ -7,6 +7,9 @@ import com.order.web.service.LoginService;
 import com.order.web.service.TokenService;
 import com.order.web.service.UserService;
 import com.order.web.util.ApiTools;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-
+@Api(value = "登录注销接口", tags = "登录注销模块")
 @RestController
 @RequestMapping("/api")
 public class LoginController {
@@ -31,7 +34,7 @@ public class LoginController {
     @Autowired
     TokenService tokenService;
 
-    //用户登录接口
+    @ApiOperation(value = "登录接口")
     @RequestMapping(value = "/login",method ={RequestMethod.GET, RequestMethod.POST})
     public ApiResult login(String username, String password ,
                            String redirectUrl, HttpServletResponse response){
@@ -72,7 +75,7 @@ public class LoginController {
         return ApiTools.result(10001,"用户名密码错误",null);
     }
 
-    //用户注销接口
+    @ApiOperation("注销接口")
     @RequestMapping(value = "/logout",method = {RequestMethod.POST,RequestMethod.GET})
     public ApiResult loginResult(@CookieValue("access_token") String access_token,
                                  @RequestAttribute(required = false,value = "username") String username,

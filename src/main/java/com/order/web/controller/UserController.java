@@ -8,6 +8,8 @@ import com.order.web.service.TokenService;
 import com.order.web.service.UserService;
 import com.order.web.util.ApiTools;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 
-@Api(value = "/api",tags = "用户user接口")
+@Api(value = "/api",tags = "用户user管理")
 @RestController()
 @CrossOrigin
 @RequestMapping("/api")
@@ -40,6 +42,7 @@ public class UserController {
     TokenService tokenService;
 
     //获取用户信息
+    @ApiOperation(value = "获取用户的详细信息", notes = "")
     @RequestMapping(value = "/user", method = {RequestMethod.GET})
    // @AuthToken
     public ApiResult getUserInfo(@RequestAttribute(required = false,value = "uuid") String uuid,
@@ -53,6 +56,20 @@ public class UserController {
         }
         User user = userService.selectUserByName(username);
         return ApiTools.result(10000,"success", user);
+    }
+
+
+    @ApiOperation(value = "获取所有用户信息")
+    @RequestMapping(value = "/users")
+    public ApiResult getAllUserInfo(){
+            List<User> userList ;
+            userList = userService.selectAllUser();
+            return ApiTools.result(10000,"success", userList);
+    }
+    @ApiOperation(value = "获取单个用户信息")
+    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
+    public ApiResult getAllUserInfo(@PathVariable String username){
+        return ApiTools.result(10000,"success", userService.selectUserByName(username));
     }
 
 
@@ -73,6 +90,7 @@ public class UserController {
         return ApiTools.result(1000,"获取成功",userList);
     }
     //增加(注册）用户
+    @ApiOperation("增加新用户")
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     public ApiResult addUsers(@RequestBody User user){
         if (null == user.getUsername()){
@@ -85,6 +103,7 @@ public class UserController {
         return ApiTools.result(1000,"添加成功",null);
     }
     //删除用户
+    @ApiOperation("删除用户")
     @RequestMapping(value = "/user",method = RequestMethod.DELETE)
     public ApiResult deleteUsers(@RequestParam String username){
         Map data = new HashMap();
@@ -94,6 +113,7 @@ public class UserController {
     }
 
     //更改用户
+    @ApiOperation("修改用户")
     @RequestMapping(value = "/user",method = RequestMethod.PUT)
     public ApiResult updateUsers(@RequestBody User user){
         Map data = new HashMap();
@@ -110,7 +130,8 @@ public class UserController {
     }
 
 
-
+    @ApiOperation(value = "获取当前登录用户信息",notes = "根据header token值获取用户信息")
+    @ApiImplicitParam(paramType = "header",name = "access_token", value = "jwt token")
     @RequestMapping(value = "/user/current",method = RequestMethod.GET)
     public ApiResult getCurrentUser(@RequestAttribute(required = false,value = "username") String username,
                                     @RequestAttribute(required = false,value = "uuid") String uuid,
