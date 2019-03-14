@@ -55,7 +55,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public User getUserInfo(String token) {
-        User user=new User();
+        User user=null;
 
 //        String uuid;
 //        uuid = stringRedisTemplate.opsForValue().get(token);
@@ -67,14 +67,10 @@ public class TokenServiceImpl implements TokenService {
 //        }
         String username = null;
         //username = JwtTokenUtils.getUsername(token);
-        logger.debug("Logout token is :" +token);
-        logger.debug("Logout token is :" +JwtTokenUtils.getUsername(token));
-        if (username==null){
-            user.setUsername("The User has logout");
-        } else {
-            user = userMapper.selectByUsername(username);
-        }
+        //logger.debug("Logout token is :" +token);
+        logger.debug("当前登录用户为:" +JwtTokenUtils.getUsername(token));
 
+            user = userMapper.selectByUsername(JwtTokenUtils.getUsername(token));
         return user;
     }
 }

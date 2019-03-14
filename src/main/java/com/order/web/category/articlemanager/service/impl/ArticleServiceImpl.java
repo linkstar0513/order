@@ -1,6 +1,6 @@
 package com.order.web.category.articlemanager.service.impl;
 
-import com.order.web.mapper.AtricleMapper;
+import com.order.web.mapper.ArticleMapper;
 import com.order.web.pojo.Article;
 import com.order.web.category.articlemanager.service.ArticleService;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     @Resource
-    AtricleMapper atricleMapper;
+    ArticleMapper articleMapper;
 
     /**
      * 获取所有文章
