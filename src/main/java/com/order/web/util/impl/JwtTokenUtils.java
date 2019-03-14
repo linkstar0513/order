@@ -18,6 +18,7 @@ public class JwtTokenUtils implements TokenGenerator {
     private static final String ROLE_CLAIMS = "rol";
     private static final SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
+
     private static final String ISS = "echisan";
 
     // 过期时间是3600秒，既是1个小时
@@ -45,6 +46,7 @@ public class JwtTokenUtils implements TokenGenerator {
     }
     // 获取用户角色
     public static String getUserRole(String token){
+
         return (String) getTokenBody(token).get(ROLE_CLAIMS);
     }
     // 是否已过期

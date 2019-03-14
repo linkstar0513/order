@@ -7,6 +7,7 @@ import com.order.web.service.LoginService;
 import com.order.web.service.TokenService;
 import com.order.web.service.UserService;
 import com.order.web.util.ApiTools;
+import io.swagger.annotations.Api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -21,6 +22,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+
+@Api(value = "/api",tags = "用户user接口")
 @RestController()
 @CrossOrigin
 @RequestMapping("/api")
